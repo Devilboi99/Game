@@ -12,7 +12,9 @@ namespace FutureGame
 {
     public partial class Form1 : Form
     {
-        private Player _player = new Player(0,0);
+        private Player player = new Player(0, 0);
+        private World world;
+
         public Form1()
         {
             InitializeComponent();
@@ -20,39 +22,41 @@ namespace FutureGame
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            DoubleBuffered = true;
             var graphics = e.Graphics;
+            var pen = new Pen(Color.Black);
             var brush = new SolidBrush(Color.Blue);
-            graphics.FillRectangle(brush,_player.x,_player.y,30,30);
+            graphics.FillRectangle(brush, Player.x, Player.y, 30, 30);
+            world = new World(Size.Height - 90);
+            graphics.DrawLine(pen, 0, world.ground, Size.Width, world.ground + 30);
+            CheckFall(world);
+            Invalidate();
         }
 
-        
-        protected override void OnKeyPress(KeyPressEventArgs e)
+
+        protected override void OnKeyDown(KeyEventArgs e)
         {
-            
-            switch (e.KeyChar)
+            switch (e.KeyCode)
             {
-                case 'w':
+                case Keys.W:
                     Player.Move(Directrion.Up);
                     break;
-                case 'd':
+                case Keys.D:
                     Player.Move(Directrion.Right);
                     break;
-                case 'a':
+                case Keys.A:
                     Player.Move(Directrion.Left);
                     break;
-                case 's':
+                case Keys.S:
                     Player.Move(Directrion.Down);
                     break;
             }
         }
 
-        protected override void OnClick(EventArgs e)
+        private void CheckFall(World earth)
         {
-            var move = new creat
-            switch (Keys)
-            {
-                
-            }
+            if (Player.y <= earth.ground)
+                Player.fall();
         }
     }
 }
