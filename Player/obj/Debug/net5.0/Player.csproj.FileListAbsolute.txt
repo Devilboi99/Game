@@ -1,5 +1,0 @@
-C:\Users\user\RiderProjects\FutureGame\Player\obj\Debug\net5.0\Player.csproj.AssemblyReference.cache
-C:\Users\user\RiderProjects\FutureGame\Player\obj\Debug\net5.0\Player.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\user\RiderProjects\FutureGame\Player\obj\Debug\net5.0\Player.AssemblyInfoInputs.cache
-C:\Users\user\RiderProjects\FutureGame\Player\obj\Debug\net5.0\Player.AssemblyInfo.cs
-C:\Users\user\RiderProjects\FutureGame\Player\obj\Debug\net5.0\Player.csproj.CoreCompileInputs.cache

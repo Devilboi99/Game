@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\RiderProjects\\FutureGame\\Player\\Player.csproj",
-      "projectName": "Player",
-      "projectPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\Player\\Player.csproj",
+      "projectUniqueName": "C:\\Users\\user\\RiderProjects\\FutureGame\\Model\\Model.csproj",
+      "projectName": "Model",
+      "projectPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\Model\\Model.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\Player\\obj\\",
+      "outputPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\Model\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"
