@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\user\\RiderProjects\\FutureGame\\FutureGame\\FutureGame.csproj",
-      "projectName": "FutureGame",
-      "projectPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\FutureGame\\FutureGame.csproj",
+      "projectUniqueName": "C:\\Users\\user\\RiderProjects\\FutureGame\\Form\\Form.csproj",
+      "projectName": "Form",
+      "projectPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\Form\\Form.csproj",
       "packagesPath": "C:\\Users\\user\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\FutureGame\\obj\\",
+      "outputPath": "C:\\Users\\user\\RiderProjects\\FutureGame\\Form\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\user\\AppData\\Roaming\\NuGet\\NuGet.Config"

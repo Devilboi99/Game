@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FutureGame", "FutureGame\FutureGame.csproj", "{EF899628-256A-47F0-97A4-A2DCE2D623C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Form", "Form\Form.csproj", "{EF899628-256A-47F0-97A4-A2DCE2D623C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{9373D5D5-1CD5-459A-A9F7-E144627B3729}"
 EndProject
