@@ -20,9 +20,9 @@ namespace FutureGame
         {
             InitializeComponent();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
- 
+            
             Size = new Size(600, 600);
- 
+            world = new World(Size.Height - 60, Width);
            
  
             Application.Idle += delegate { Invalidate(); };
@@ -32,11 +32,10 @@ namespace FutureGame
         {
             Update();
             DoubleBuffered = true;
-            world = new World(Size.Height - 60);
             var graphics = e.Graphics;
-            e.Graphics.DrawLine(Pens.Green, 0, world.ground, Width, world.ground);
+            e.Graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
             var brush = new SolidBrush(Color.Blue);
-            graphics.FillRectangle(brush, player.x, player.y, 30,  30);
+            graphics.FillRectangle(brush, player.x, player.y, player.Width,  player.Height);
             Invalidate();   
         }
 
@@ -62,17 +61,11 @@ namespace FutureGame
                 case Keys.Space:
                     player.jump(player,world);
                     break;
-                case Keys.W:
-                    player.Move(Directrion.Up, player);
+                case Keys.A:
+                    player.Move(Directrion.Left, world);
                     break;
                 case Keys.D:
-                    player.Move(Directrion.Right, player);
-                    break;
-                case Keys.A:
-                    player.Move(Directrion.Left, player);
-                    break;
-                case Keys.S:
-                    player.Move(Directrion.Down, player);
+                    player.Move(Directrion.Right,world);
                     break;
             }
         }

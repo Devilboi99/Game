@@ -2,11 +2,13 @@
 {
     public class World
     {
-        public int ground { get; }
+        public int Ground { get; }
+        public int Wall { get; }
 
-        public World(int ground)
+        public World(int ground, int wall)
         {
-            this.ground = ground;
+            Ground = ground;
+            Wall = wall;
         }
     }
 }
