@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 
 namespace Model
@@ -13,45 +14,40 @@ namespace Model
         Right
     }
     
-    public class Player
+    public class Player : Physics
     {
-        public static int x { get; private set; }
-        public static int y { get; private set; }
-    
+        public float Width { get; set; }
+        public float Height { get; set; }
         public Player(int x, int y)
         {
-            Player.x = x;
-            Player.y = y;
+            this.x = x;
+            this.y = y;
+            Physics physics = new Physics();
         }
     
-        public static void Move(Directrion dir)
+        public void Move(Directrion dir,Player player)
         {
             switch (dir)
             {
-                case Directrion.Down:
-                    y += 1;
-                    break;
-                case Directrion.Up:
-                    y -= 1;
-                    break;
-                case Directrion.Left:
-                    x -= 1;
-                    break;
-                case Directrion.Right:
-                    x += 1;
-                    break;
+                
             }
         }
-    
-        public static void fall()
+
+        public void jump(Player player,World world)
         {
-            y += 1;
+            const int jumpSpeed = 50;
+
+            if (y + Height / 2 > world.ground - 10)//только если стоим на земле
+                Velocity = new PointF(player.Velocity.X, player.Velocity.Y - jumpSpeed);//прыгаем вверх
         }
+        public override void Update(float dt,Player player,World world)
+        {
+            //столкновенине с землей?
+            if (y + Height / 2 > world.ground)
+                OnGroundCollision(world.ground - Height / 2);
+            //
+            base.Update(dt,player,world);
+        }
+        
     }
 }
-
-//var command = new Dictionary<Directrion, Func<int>>();
-//command.Add(Directrion.Down, () => 1);
-//command.Add(Directrion.Left, () => -1);
-//command.Add(Directrion.Right, () => 1);
-//command.Add(Directrion.Down, () => -1);

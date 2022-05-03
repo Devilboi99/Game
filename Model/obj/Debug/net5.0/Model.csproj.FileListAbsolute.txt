@@ -1,0 +1,12 @@
+C:\Users\user\RiderProjects\FutureGame\Model\bin\Debug\net5.0\Model.deps.json
+C:\Users\user\RiderProjects\FutureGame\Model\bin\Debug\net5.0\Model.dll
+C:\Users\user\RiderProjects\FutureGame\Model\bin\Debug\net5.0\ref\Model.dll
+C:\Users\user\RiderProjects\FutureGame\Model\bin\Debug\net5.0\Model.pdb
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.csproj.AssemblyReference.cache
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.AssemblyInfoInputs.cache
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.AssemblyInfo.cs
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.csproj.CoreCompileInputs.cache
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.dll
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\ref\Model.dll
+C:\Users\user\RiderProjects\FutureGame\Model\obj\Debug\net5.0\Model.pdb

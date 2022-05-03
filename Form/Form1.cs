@@ -13,51 +13,68 @@ namespace FutureGame
 {
     public partial class Form1 : Form
     {
-        private Player player = new Player(0, 0);
+        private Player player = new Player(30, 30);
         private World world;
 
         public Form1()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
+ 
+            Size = new Size(600, 600);
+ 
+           
+ 
+            Application.Idle += delegate { Invalidate(); };
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            Update();
             DoubleBuffered = true;
+            world = new World(Size.Height - 60);
             var graphics = e.Graphics;
-            var pen = new Pen(Color.Black);
+            e.Graphics.DrawLine(Pens.Green, 0, world.ground, Width, world.ground);
             var brush = new SolidBrush(Color.Blue);
-            graphics.FillRectangle(brush, Player.x, Player.y, 30, 30);
-            world = new World(Size.Height - 90);
-            graphics.DrawLine(pen, 0, world.ground, Size.Width, world.ground + 30);
-            CheckFall(world);
-            Invalidate();
+            graphics.FillRectangle(brush, player.x, player.y, 30,  30);
+            Invalidate();   
         }
 
+        private DateTime lastUpdate = DateTime.MinValue;
+ 
+        new void Update()
+        {
+            var now = DateTime.Now;
+            var dt = (float)(now - lastUpdate).TotalMilliseconds / 100f;
+            //
+            if (lastUpdate != DateTime.MinValue)
+            {
+                player.Update(dt,player,world);
+            }
+            //
+            lastUpdate = now;
+        }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
+                case Keys.Space:
+                    player.jump(player,world);
+                    break;
                 case Keys.W:
-                    Player.Move(Directrion.Up);
+                    player.Move(Directrion.Up, player);
                     break;
                 case Keys.D:
-                    Player.Move(Directrion.Right);
+                    player.Move(Directrion.Right, player);
                     break;
                 case Keys.A:
-                    Player.Move(Directrion.Left);
+                    player.Move(Directrion.Left, player);
                     break;
                 case Keys.S:
-                    Player.Move(Directrion.Down);
+                    player.Move(Directrion.Down, player);
                     break;
             }
-        }
-
-        private void CheckFall(World earth)
-        {
-            if (Player.y <= earth.ground)
-                Player.fall();
         }
     }
 }
