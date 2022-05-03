@@ -48,16 +48,6 @@ namespace Model
             y += 1;
         }
     }
-    
-    public class World
-    {
-        public int ground { get; }
-    
-        public World(int ground)
-        {
-            this.ground = ground;
-        }
-    }
 }
 
 //var command = new Dictionary<Directrion, Func<int>>();
