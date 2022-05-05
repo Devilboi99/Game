@@ -19,7 +19,7 @@ namespace Model
         public float Width { get; set; }
         public float Height { get; set; }
 
-        const int MoveSpeed = 5;
+        const float MoveSpeed = 5;
 
         public Player(int x, int y)
         {
@@ -35,14 +35,24 @@ namespace Model
             switch (dir)
             {
                 case Directrion.Right:
+                    Velocity = new PointF(Velocity.X + MoveSpeed, Velocity.Y);
                     if (x + MoveSpeed < world.Wall || x + MoveSpeed >= 0)
                         x += MoveSpeed;
                     break;
                 case Directrion.Left:
+                    Velocity = new PointF(Velocity.X - MoveSpeed, Velocity.Y);
                     if (x + MoveSpeed < world.Wall || x + MoveSpeed >= 0)
                         x -= MoveSpeed;
                     break;
             }
+        }
+
+        public void WithoutMove()
+        {
+            if (Velocity.X > 0) 
+                Velocity = new PointF(Velocity.X - 3, Velocity.Y);
+            if (Velocity.X < 0)
+                Velocity = new PointF(Velocity.X + 3, Velocity.Y);
         }
 
         public void jump(Player player, World world)

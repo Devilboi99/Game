@@ -19,12 +19,13 @@ namespace FutureGame
         public Form1()
         {
             InitializeComponent();
-            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint, true);
-            
+            SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint,
+                true);
+
             Size = new Size(600, 600);
             world = new World(Size.Height - 60, Width);
-           
- 
+
+
             Application.Idle += delegate { Invalidate(); };
         }
 
@@ -35,39 +36,39 @@ namespace FutureGame
             var graphics = e.Graphics;
             e.Graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
             var brush = new SolidBrush(Color.Blue);
-            graphics.FillRectangle(brush, player.x, player.y, player.Width,  player.Height);
-            Invalidate();   
+            graphics.FillRectangle(brush, player.x, player.y, player.Width, player.Height);
+            Invalidate();
         }
 
         private DateTime lastUpdate = DateTime.MinValue;
- 
+
         new void Update()
         {
             var now = DateTime.Now;
-            var dt = (float)(now - lastUpdate).TotalMilliseconds / 100f;
+            var dt = (float) (now - lastUpdate).TotalMilliseconds / 100f;
             //
             if (lastUpdate != DateTime.MinValue)
             {
-                player.Update(dt,player,world);
+                player.Update(dt, player, world);
             }
+
             //
             lastUpdate = now;
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            switch (e.KeyCode)
-            {
-                case Keys.Space:
-                    player.jump(player,world);
-                    break;
-                case Keys.A:
-                    player.Move(Directrion.Left, world);
-                    break;
-                case Keys.D:
-                    player.Move(Directrion.Right,world);
-                    break;
-            }
+            var time = 0;
+            var timer = new Timer();
+            timer.Interval = 500;
+            if (Keys.Space == e.KeyCode)
+                player.jump(player, world);
+            if (Keys.A == e.KeyCode)
+                player.Move(Directrion.Left, world);
+            if (Keys.D == e.KeyCode)
+                player.Move(Directrion.Right, world);
+            player.WithoutMove();
+            timer.Enabled = true;
         }
     }
 }
