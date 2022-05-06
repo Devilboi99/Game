@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using Timer = System.Timers.Timer;
 
 namespace Model
 {
@@ -19,6 +21,8 @@ namespace Model
         public float Width { get; set; }
         public float Height { get; set; }
 
+        public bool Moving { get; set; }
+
         const float MoveSpeed = 5;
 
         public Player(int x, int y)
@@ -32,6 +36,8 @@ namespace Model
 
         public void Move(Directrion dir, World world)
         {
+            if (Velocity.X > 30 || Velocity.X < -30) return;
+            Moving = true;
             switch (dir)
             {
                 case Directrion.Right:
@@ -47,12 +53,14 @@ namespace Model
             }
         }
 
-        public void WithoutMove()
+        public void Resistance()
         {
-            if (Velocity.X > 0) 
-                Velocity = new PointF(Velocity.X - 3, Velocity.Y);
+            if (Velocity.X > 0)
+                Velocity = new PointF(Velocity.X - 00000.1f, Velocity.Y);
             if (Velocity.X < 0)
-                Velocity = new PointF(Velocity.X + 3, Velocity.Y);
+                Velocity = new PointF(Velocity.X + 00000.1f, Velocity.Y);
+            if (Velocity.X == 0)
+                Moving = false;
         }
 
         public void jump(Player player, World world)
@@ -68,6 +76,9 @@ namespace Model
             //столкновенине с землей?
             if (y + Height > world.Ground)
                 OnGroundCollision(world.Ground - Height);
+            if (Math.Abs(y + Height - world.Ground) < 2e-98 && Moving)
+                Velocity = new PointF(0, Velocity.Y);
+            Resistance();
             //
             base.Update(dt, player, world);
         }

@@ -58,17 +58,12 @@ namespace FutureGame
 
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            var time = 0;
-            var timer = new Timer();
-            timer.Interval = 500;
             if (Keys.Space == e.KeyCode)
                 player.jump(player, world);
             if (Keys.A == e.KeyCode)
                 player.Move(Directrion.Left, world);
             if (Keys.D == e.KeyCode)
                 player.Move(Directrion.Right, world);
-            player.WithoutMove();
-            timer.Enabled = true;
         }
     }
 }
