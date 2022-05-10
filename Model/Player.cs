@@ -21,9 +21,8 @@ namespace Model
         public float Width { get; set; }
         public float Height { get; set; }
 
-        public bool Moving { get; set; }
 
-        const float MoveSpeed = 5;
+        const float MoveStep = 5;
 
         public Player(int x, int y)
         {
@@ -37,30 +36,34 @@ namespace Model
         public void Move(Directrion dir, World world)
         {
             if (Velocity.X > 30 || Velocity.X < -30) return;
-            Moving = true;
+
             switch (dir)
             {
                 case Directrion.Right:
-                    Velocity = new PointF(Velocity.X + MoveSpeed, Velocity.Y);
-                    if (x + MoveSpeed < world.Wall || x + MoveSpeed >= 0)
-                        x += MoveSpeed;
+                    x += MoveStep;
+                    Velocity = new PointF(Velocity.X + MoveStep, Velocity.Y);
                     break;
                 case Directrion.Left:
-                    Velocity = new PointF(Velocity.X - MoveSpeed, Velocity.Y);
-                    if (x + MoveSpeed < world.Wall || x + MoveSpeed >= 0)
-                        x -= MoveSpeed;
+                    x -= MoveStep;
+                    Velocity = new PointF(Velocity.X - MoveStep, Velocity.Y);
                     break;
             }
+            if (x + Width > world.Wall)
+            {
+                x = world.Wall - Width;
+            }
+
+            if (x < 0)
+                x = 0;
+
         }
 
-        public void Resistance()
+        public void Resistance(float resist)
         {
             if (Velocity.X > 0)
-                Velocity = new PointF(Velocity.X - 00000.1f, Velocity.Y);
+                Velocity = new PointF(Velocity.X - resist, Velocity.Y);
             if (Velocity.X < 0)
-                Velocity = new PointF(Velocity.X + 00000.1f, Velocity.Y);
-            if (Velocity.X == 0)
-                Moving = false;
+                Velocity = new PointF(Velocity.X + resist, Velocity.Y);
         }
 
         public void jump(Player player, World world)
@@ -76,9 +79,9 @@ namespace Model
             //столкновенине с землей?
             if (y + Height > world.Ground)
                 OnGroundCollision(world.Ground - Height);
-            if (Math.Abs(y + Height - world.Ground) < 2e-98 && Moving)
-                Velocity = new PointF(0, Velocity.Y);
-            Resistance();
+            if (Math.Abs(y + Height - world.Ground) < 1e-00)
+                Resistance(0.1f);
+            Resistance(00000.1f);
             //
             base.Update(dt, player, world);
         }

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Model;
@@ -23,7 +24,7 @@ namespace FutureGame
                 true);
 
             Size = new Size(600, 600);
-            world = new World(Size.Height - 60, Width);
+            world = new World(Size.Height - 60, Size.Width);
 
 
             Application.Idle += delegate { Invalidate(); };
@@ -35,8 +36,11 @@ namespace FutureGame
             DoubleBuffered = true;
             var graphics = e.Graphics;
             e.Graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
+            e.Graphics.DrawLine(Pens.Green, 10, 0, 10, world.Ground);
             var brush = new SolidBrush(Color.Blue);
             graphics.FillRectangle(brush, player.x, player.y, player.Width, player.Height);
+            
+            
             Invalidate();
         }
 
@@ -60,8 +64,10 @@ namespace FutureGame
         {
             if (Keys.Space == e.KeyCode)
                 player.jump(player, world);
+
             if (Keys.A == e.KeyCode)
                 player.Move(Directrion.Left, world);
+
             if (Keys.D == e.KeyCode)
                 player.Move(Directrion.Right, world);
         }

@@ -10,5 +10,11 @@
             Ground = ground;
             Wall = wall;
         }
+
+        public bool InRoom(float rightBorder, float leftBorder)
+        {
+            return rightBorder < Wall && leftBorder >= 0;
+        }
+
     }
 }

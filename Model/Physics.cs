@@ -13,18 +13,15 @@ namespace Model
 
         public PointF Velocity { get; set; }
 
-        //масса
         public float Mass { get; set; }
 
         //упругость
         public float Spring { get; set; }
 
-        //гравитация
         public bool Gravity { get; set; }
 
-        //приложенная сила
         public PointF Force { get; set; }
-        
+
 
         public Physics()
         {
@@ -33,7 +30,7 @@ namespace Model
             Gravity = true;
         }
 
-        public virtual void Update(float dt,Player player,World world)
+        public virtual void Update(float dt, Player player, World world)
         {
             //сила
             var force = Force;
@@ -50,12 +47,27 @@ namespace Model
             x = x + Velocity.X * dt;
             y = y + Velocity.Y * dt;
         }
-        
+
         public void OnGroundCollision(float groundY)
         {
             if (Velocity.Y < -float.Epsilon) return;
             y = groundY - 0.0001f;
             Velocity = new PointF(Velocity.X, -Velocity.Y * Spring);
+        }
+
+        public void OnWallCollision(float groundX)
+        {
+            if (Velocity.X < -float.Epsilon) return;
+            if (x < 0)
+            {
+                x = groundX - 0.0001f;
+                Velocity = new PointF(-Velocity.X * Spring, Velocity.Y);
+            }
+            else
+            {
+                x = groundX + 0.0001f;
+                Velocity = new PointF(Velocity.X * Spring, Velocity.Y);
+            }
         }
     }
 }
