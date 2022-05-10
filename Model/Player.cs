@@ -48,14 +48,7 @@ namespace Model
                     Velocity = new PointF(Velocity.X - MoveStep, Velocity.Y);
                     break;
             }
-            if (x + Width > world.Wall)
-            {
-                x = world.Wall - Width;
-            }
-
-            if (x < 0)
-                x = 0;
-
+            
         }
 
         public void Resistance(float resist)
@@ -82,6 +75,12 @@ namespace Model
             if (Math.Abs(y + Height - world.Ground) < 1e-00)
                 Resistance(0.1f);
             Resistance(00000.1f);
+            if (x + Width > world.Wall)
+            {
+                x = world.Wall - Width;
+            }
+            if (x < 0)
+                x = 0;
             //
             base.Update(dt, player, world);
         }
