@@ -10,8 +10,6 @@ namespace Model
 {
     public enum Directrion
     {
-        Up,
-        Down,
         Left,
         Right
     }

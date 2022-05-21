@@ -14,6 +14,7 @@ namespace FutureGame
 {
     public partial class Form1 : Form
     {
+        private Image playerImage;
         private Player player = new Player(30, 30);
         private World world;
 
@@ -22,25 +23,26 @@ namespace FutureGame
             InitializeComponent();
             SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.UserPaint,
                 true);
-
-            Size = new Size(600, 600);
-            world = new World(Size.Height - 60, Size.Width);
-
-
+            
+            WindowState = FormWindowState.Maximized;
+            var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
+            world = new World(sizeForm.Height - 60, sizeForm.Width);
             Application.Idle += delegate { Invalidate(); };
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Update();
+            playerImage = Image.FromFile("Image/PlayerInMove.png");
+            
             DoubleBuffered = true;
             var graphics = e.Graphics;
             e.Graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
-            e.Graphics.DrawLine(Pens.Green, 10, 0, 10, world.Ground);
             var brush = new SolidBrush(Color.Blue);
+            e.Graphics.DrawImage(playerImage,new Rectangle(30,30,30,30));
             graphics.FillRectangle(brush, player.x, player.y, player.Width, player.Height);
             
-            
+
             Invalidate();
         }
 
@@ -50,13 +52,12 @@ namespace FutureGame
         {
             var now = DateTime.Now;
             var dt = (float) (now - lastUpdate).TotalMilliseconds / 100f;
-            //
+            
             if (lastUpdate != DateTime.MinValue)
             {
                 player.Update(dt, player, world);
             }
-
-            //
+            
             lastUpdate = now;
         }
 
