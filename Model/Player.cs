@@ -26,8 +26,8 @@ namespace Model
         {
             this.x = x;
             this.y = y;
-            Width = 30;
-            Height = 30;
+            Width = 50;
+            Height = 80;
             Physics physics = new Physics();
         }
 

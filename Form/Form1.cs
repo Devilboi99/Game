@@ -26,6 +26,7 @@ namespace FutureGame
             
             WindowState = FormWindowState.Maximized;
             var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
+            
             world = new World(sizeForm.Height - 60, sizeForm.Width);
             Application.Idle += delegate { Invalidate(); };
         }
@@ -38,14 +39,18 @@ namespace FutureGame
             DoubleBuffered = true;
             var graphics = e.Graphics;
             e.Graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
+            DrawTo(e.Graphics);
             var brush = new SolidBrush(Color.Blue);
-            e.Graphics.DrawImage(playerImage,new Rectangle(30,30,30,30));
-            graphics.FillRectangle(brush, player.x, player.y, player.Width, player.Height);
-            
+
 
             Invalidate();
         }
 
+        private void DrawTo(Graphics e)
+        {
+            e.DrawImage(playerImage, new RectangleF(player.x, player.y, player.Width, player.Height));
+            Invalidate();
+        }
         private DateTime lastUpdate = DateTime.MinValue;
 
         new void Update()
