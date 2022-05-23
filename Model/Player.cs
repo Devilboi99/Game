@@ -28,7 +28,6 @@ namespace Model
             this.y = y;
             Width = 50;
             Height = 80;
-            Physics physics = new Physics();
         }
 
         public void Move(Directrion dir, World world)
@@ -46,7 +45,6 @@ namespace Model
                     Velocity = new PointF(Velocity.X - MoveStep, Velocity.Y);
                     break;
             }
-            
         }
 
         public void Resistance(float resist)
@@ -61,26 +59,35 @@ namespace Model
         {
             const int jumpSpeed = 50;
 
-            if (y + Height > world.Ground - 10) //только если стоим на земле
+            if (y + Height > world.Ground - 10 || world.Overlaps(player, 0)) //только если стоим на земле или на блоке
                 Velocity = new PointF(player.Velocity.X, player.Velocity.Y - jumpSpeed); //прыгаем вверх
         }
 
         public override void Update(float dt, Player player, World world)
         {
-            //столкновенине с землей?
             if (y + Height > world.Ground)
-                OnGroundCollision(world.Ground - Height);
-            if (Math.Abs(y + Height - world.Ground) < 1e-00)
-                Resistance(0.1f);
-            Resistance(00000.1f);
-            if (x + Width > world.Wall)
             {
-                x = world.Wall - Width;
+                OnGroundCollision(world.Ground - Height);
+                Resistance(0.50f);
             }
-            if (x < 0)
-                x = 0;
+            Resistance(0.10f);
+            world.CheckFloor(player);
+            player.InRoom(world);
+
+
+
             //
             base.Update(dt, player, world);
+        }
+
+        private void InRoom(World world)
+        {
+            if (x + Width > world.Wall)
+                x = world.Wall - Width;
+            if (x < 0)
+                x = 0;
+
+            
         }
     }
 }

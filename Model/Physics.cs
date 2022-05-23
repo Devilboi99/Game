@@ -54,20 +54,5 @@ namespace Model
             y = groundY - 0.0001f;
             Velocity = new PointF(Velocity.X, -Velocity.Y * Spring);
         }
-
-        public void OnWallCollision(float groundX)
-        {
-            if (Velocity.X < -float.Epsilon) return;
-            if (x < 0)
-            {
-                x = groundX - 0.0001f;
-                Velocity = new PointF(-Velocity.X * Spring, Velocity.Y);
-            }
-            else
-            {
-                x = groundX + 0.0001f;
-                Velocity = new PointF(Velocity.X * Spring, Velocity.Y);
-            }
-        }
     }
 }

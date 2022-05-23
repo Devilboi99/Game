@@ -17,6 +17,7 @@ namespace FutureGame
         private Image playerImage;
         private Player player = new Player(30, 30);
         private World world;
+        
 
         public Form1()
         {
@@ -26,29 +27,32 @@ namespace FutureGame
             
             WindowState = FormWindowState.Maximized;
             var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
-            
             world = new World(sizeForm.Height - 60, sizeForm.Width);
+            world.CreateObjectWorld();
             Application.Idle += delegate { Invalidate(); };
         }
+        
 
         protected override void OnPaint(PaintEventArgs e)
         {
             Update();
             playerImage = Image.FromFile("Image/PlayerInMove.png");
-            
             DoubleBuffered = true;
             var graphics = e.Graphics;
-            e.Graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
-            DrawTo(e.Graphics);
-            var brush = new SolidBrush(Color.Blue);
-
-
+            graphics.DrawLine(Pens.Green, 0, world.Ground, Width, world.Ground);
+            var brush = Brushes.Green;
+            graphics.FillRectangle(Brushes.Green,world.Wall / 2 - 150 ,world.Ground - 100,300,100);
+            graphics.FillRectangle(Brushes.Green,world.Wall / 2 - 250, world.Ground - 50, 100, 50);
+            graphics.FillRectangle(Brushes.Green,world.Wall / 2 + 150, world.Ground - 50, 100, 50);
+            graphics.FillRectangle(Brushes.Green, 0, world.Ground / 1.8f , world.Wall / 4f,30 );
+            graphics.FillRectangle(Brushes.Green, world.Wall - world.Wall / 4, world.Ground / 1.8f, world.Wall / 4f,30 );
+            DrawTo(graphics);
             Invalidate();
         }
-
+        
         private void DrawTo(Graphics e)
         {
-            e.DrawImage(playerImage, new RectangleF(player.x, player.y, player.Width, player.Height));
+            e.DrawImage(playerImage, new RectangleF(player.x, player.y, player.Width, player.Height)); // вроде этим я хочу разделить изображение от просто рисованых штук
             Invalidate();
         }
         private DateTime lastUpdate = DateTime.MinValue;
