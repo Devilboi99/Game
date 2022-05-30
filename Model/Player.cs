@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using Timer = System.Timers.Timer;
+﻿using System.Drawing;
 
 namespace Model
 {
@@ -16,11 +10,10 @@ namespace Model
 
     public class Player : Physics
     {
-        public float Width { get; set; }
-        public float Height { get; set; }
+        public float Width { get;}
+        public float Height { get;}
 
-
-        const float MoveStep = 5;
+        private const float SpeedStep = 5;
 
         public Player(int x, int y)
         {
@@ -30,24 +23,25 @@ namespace Model
             Height = 80;
         }
 
-        public void Move(Directrion dir, World world)
+        public void Move(Directrion dir)
         {
             if (Velocity.X > 30 || Velocity.X < -30) return;
 
             switch (dir)
             {
                 case Directrion.Right:
-                    x += MoveStep;
-                    Velocity = new PointF(Velocity.X + MoveStep, Velocity.Y);
+                    x += SpeedStep;
+                    Velocity = new PointF(Velocity.X + SpeedStep,
+                        Velocity.Y); // Замутитить Moving and stopMoving для передвжиение в полёте.
                     break;
                 case Directrion.Left:
-                    x -= MoveStep;
-                    Velocity = new PointF(Velocity.X - MoveStep, Velocity.Y);
+                    x -= SpeedStep;
+                    Velocity = new PointF(Velocity.X - SpeedStep, Velocity.Y);
                     break;
             }
         }
 
-        public void Resistance(float resist)
+        private void Resistance(float resist)
         {
             if (Velocity.X > 0)
                 Velocity = new PointF(Velocity.X - resist, Velocity.Y);
@@ -55,12 +49,12 @@ namespace Model
                 Velocity = new PointF(Velocity.X + resist, Velocity.Y);
         }
 
-        public void jump(Player player, World world)
+        public void Jump(World world)
         {
             const int jumpSpeed = 50;
 
-            if (y + Height > world.Ground - 10 || world.Overlaps(player, 0)) //только если стоим на земле или на блоке
-                Velocity = new PointF(player.Velocity.X, player.Velocity.Y - jumpSpeed); //прыгаем вверх
+            if (y + Height > world.Ground - 10 || world.IsOnFloor(this)) //только если стоим на земле или на блоке
+                Velocity = new PointF(Velocity.X, Velocity.Y - jumpSpeed); //прыгаем вверх
         }
 
         public override void Update(float dt, Player player, World world)
@@ -71,23 +65,20 @@ namespace Model
                 Resistance(0.50f);
             }
             Resistance(0.10f);
-            world.CheckFloor(player);
+            world.IsOnFloor(player);
             player.InRoom(world);
-
-
-
-            //
+            world.PlayerInDoor(player);
+            if (world.IsFindExist)
+                player.x = 30;
             base.Update(dt, player, world);
         }
 
         private void InRoom(World world)
         {
-            if (x + Width > world.Wall)
-                x = world.Wall - Width;
+            if (x + Width > world.RightSide)
+                x = world.RightSide - Width;
             if (x < 0)
                 x = 0;
-
-            
         }
     }
 }
