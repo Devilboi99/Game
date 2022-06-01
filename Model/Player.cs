@@ -68,8 +68,8 @@ namespace Model
             world.IsOnFloor(player);
             player.InRoom(world);
             world.PlayerInDoor(player);
-            if (world.IsFindExist)
-                player.x = 30;
+            if (world.IsCompleted)
+                x = 33;
             base.Update(dt, player, world);
         }
 

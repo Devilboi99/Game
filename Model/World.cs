@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 
 
-
 namespace Model
 {
     public class World
@@ -39,19 +38,20 @@ namespace Model
             }
         }
 
-
+        public string TextLevel { get; private set; }
         private List<Floor> floors;
 
         private Door door;
-        public bool IsFindExist { get; private set; }
+        public bool IsCompleted { get; private set; }
         public int Ground { get; }
         public int RightSide { get; }
 
-        public World(int ground, int rightSide)
+        public World(int rightSide, int ground, string textLevel)
         {
-            Ground = ground;
-            RightSide = rightSide;
+            Ground = rightSide;
+            RightSide = ground;
             floors = new List<Floor>();
+            TextLevel = textLevel;
         }
 
         public void CreateObjectWorld()
@@ -75,7 +75,7 @@ namespace Model
         public void PlayerInDoor(Player player)
         {
             if (Overlaps(player, door))
-                IsFindExist = true;
+                IsCompleted = true;
         }
 
         public bool IsOnFloor(Player player)
