@@ -12,6 +12,7 @@ namespace FutureGame
         private Image playerImage;
         private Player player = new Player(30, 30);
         private Game Levels = new Game();
+        private Monster monster = new Monster(1000, 30);
 
         private World currentWorld;
 //        private SoundPlayer mediaPlayer = new SoundPlayer("music/background.wav");
@@ -28,18 +29,14 @@ namespace FutureGame
             var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
             Levels.CreateLevels(sizeForm.Height - 60, sizeForm.Width);
             currentWorld = Levels[Levels.CurrentLevelNunber];
-            currentWorld.CreateObjectWorld();
             Level(Levels);
             Application.Idle += delegate { Invalidate(); };
         }
 
         public void Level(Game levels)
         {
-            if (currentWorld.IsCompleted)
-            {
+            if (currentWorld.IsCompleted && currentWorld.door.isOpen)
                 currentWorld = levels[++levels.CurrentLevelNunber];
-                currentWorld.CreateObjectWorld();
-            }
         }
 
 
@@ -47,6 +44,12 @@ namespace FutureGame
         {
             Update();
             Level(Levels);
+            if (Levels.CurrentLevelNunber == numlevel.second)
+            {
+                e.Graphics.DrawImage(playerImage,
+                    new RectangleF(monster.x, monster.y, monster.Width,
+                        monster.Height));
+            }
             e.Graphics.DrawString(currentWorld.TextLevel, new Font("Arial", 16), Brushes.Black,
                 new Point(currentWorld.RightSide / 2 - 80, currentWorld.Ground / 3));
             playerImage = Image.FromFile("Image/PlayerInMove.png");
@@ -62,6 +65,7 @@ namespace FutureGame
                 new RectangleF(player.x, player.y, player.Width,
                     player.Height)); // вроде этим я хочу разделить изображение от просто рисованых штук
             graphics.DrawLine(Pens.Green, 0, currentWorld.Ground, Width, currentWorld.Ground);
+            
             graphics.FillRectangle(Brushes.Green, currentWorld.RightSide / 2 - 150, currentWorld.Ground - 130, 300, 130);
             graphics.FillRectangle(Brushes.Green, currentWorld.RightSide / 2 - 250, currentWorld.Ground - 50, 100, 50);
             graphics.FillRectangle(Brushes.Green, currentWorld.RightSide / 2 + 150, currentWorld.Ground - 50, 100, 50);
@@ -80,6 +84,8 @@ namespace FutureGame
 
             if (lastUpdate != DateTime.MinValue)
                 player.Update(dt, player, currentWorld);
+            if (Levels.CurrentLevelNunber == numlevel.second)
+                monster.GoTo(player);
 
             lastUpdate = now;
         }
@@ -90,10 +96,10 @@ namespace FutureGame
                 player.Jump(currentWorld);
 
             if (Keys.A == e.KeyCode)
-                player.Move(Directrion.Left);
+                player.Move(Direction.Left);
 
             if (Keys.D == e.KeyCode)
-                player.Move(Directrion.Right);
+                player.Move(Direction.Right);
         }
     }
 }

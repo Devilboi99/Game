@@ -29,6 +29,7 @@ namespace Model
             Mass = 1;
             Gravity = true;
         }
+        
 
         public virtual void Update(float dt, Player player, World world)
         {

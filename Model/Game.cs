@@ -22,8 +22,8 @@ namespace Model
         public void CreateLevels(int ground, int rightSide)
         {
            
-            levels[numlevel.First] = new World(ground, rightSide, "Где же выход?");
-            levels[numlevel.second] = new World(ground, rightSide, "пошел нафиг");
+            levels[numlevel.First] = new World(ground, rightSide, "Где же выход?",true);
+            levels[numlevel.second] = new World(ground, rightSide, "пошел нафиг", true);
         }
 
         public World this[numlevel level]

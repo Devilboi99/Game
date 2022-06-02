@@ -2,16 +2,16 @@
 
 namespace Model
 {
-    public enum Directrion
+    public enum Direction
     {
         Left,
         Right
     }
 
-    public class Player : Physics
+    public class Player : Physics, ICreature
     {
-        public float Width { get;}
-        public float Height { get;}
+        public float Width { get; }
+        public float Height { get; }
 
         private const float SpeedStep = 5;
 
@@ -23,18 +23,18 @@ namespace Model
             Height = 80;
         }
 
-        public void Move(Directrion dir)
+        public void Move(Direction dir)
         {
             if (Velocity.X > 30 || Velocity.X < -30) return;
 
             switch (dir)
             {
-                case Directrion.Right:
+                case Direction.Right:
                     x += SpeedStep;
                     Velocity = new PointF(Velocity.X + SpeedStep,
                         Velocity.Y); // Замутитить Moving and stopMoving для передвжиение в полёте.
                     break;
-                case Directrion.Left:
+                case Direction.Left:
                     x -= SpeedStep;
                     Velocity = new PointF(Velocity.X - SpeedStep, Velocity.Y);
                     break;
@@ -64,21 +64,17 @@ namespace Model
                 OnGroundCollision(world.Ground - Height);
                 Resistance(0.50f);
             }
+
             Resistance(0.10f);
             world.IsOnFloor(player);
-            player.InRoom(world);
+            world.InRoom(player);
             world.PlayerInDoor(player);
             if (world.IsCompleted)
                 x = 33;
             base.Update(dt, player, world);
         }
 
-        private void InRoom(World world)
-        {
-            if (x + Width > world.RightSide)
-                x = world.RightSide - Width;
-            if (x < 0)
-                x = 0;
-        }
+        public void ChangePositionPlayerX(float newPosition)
+            => x = newPosition;
     }
 }

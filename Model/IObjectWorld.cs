@@ -1,10 +1,10 @@
 ﻿namespace Model
 {
-    public abstract class IObjectWorld
+    public interface IObjectWorld
     {
-        public abstract float x { get; }
-        public abstract float y { get; }
-        public abstract float x2 { get; }
-        public abstract float y2 { get; }
+        public float x { get; }
+        public float y { get; }
+        public float x2 { get; }
+        public float y2 { get; }
     }
 }

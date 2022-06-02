@@ -9,7 +9,7 @@ namespace TestModel
     {
         private float startPositionX = 10;
         private Player player = new Player(10, 10);
-        private World world = new World(500, 300, "где же выход?");
+        private World world = new World(500, 300, "где же выход?",true);
 
         private DateTime lastUpdate = DateTime.MinValue;
 
@@ -32,18 +32,17 @@ namespace TestModel
         [Test]
         public void CheckMoveRightSide()
         {
-            player.Move(Directrion.Left);
+            player.Move(Direction.Left);
         }
 
         [Test]
         public void WorkDoor()
         {
-            world.CreateObjectWorld();
             Assert.AreEqual("где же выход?", world.TextLevel);
             do
             {
                 Update();
-                player.Move(Directrion.Right);
+                player.Move(Direction.Right);
             } while (!world.IsCompleted);
            
                
