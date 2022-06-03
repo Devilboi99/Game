@@ -5,6 +5,8 @@ using System.Windows.Forms;
 using Model;
 using System.Media;
 using System.Threading;
+using System.Threading.Tasks;
+using Timer = System.Windows.Forms.Timer;
 
 namespace FutureGame
 {
@@ -49,7 +51,16 @@ namespace FutureGame
                     new RectangleF(currentWorld.Monster.x, currentWorld.Monster.y, currentWorld.Monster.Width,
                         currentWorld.Monster.Height));
             }
-            currentWorld.PlayerInDoor(player, currentWorld.ChangeText("оооо нееет, дверь закрыта, можешь подождать секунд?"));
+
+            currentWorld.PlayerInDoor(player, () =>
+            {
+                currentWorld.ChangeText("оооо нееет, дверь закрыта, можешь подождать секунд 5?");
+                var thread = new Thread(() => { 
+                    Thread.Sleep(5000); 
+                    currentWorld.door.UnLock();
+                });
+                thread.Start();
+            });
             e.Graphics.DrawString(currentWorld.TextLevel, new Font("Arial", 16), Brushes.Black,
                 new Point(currentWorld.RightSide / 2 - 80, currentWorld.Ground / 3));
             playerImage = Image.FromFile("Image/PlayerInMove.png");

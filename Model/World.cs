@@ -43,8 +43,8 @@ namespace Model
             }
         }
 
-        public Action ChangeText(string newText)
-            => () => TextLevel = newText;
+        public void ChangeText(string newText)
+            => TextLevel = newText;
 
         public string TextLevel { get; private set; }
         private List<Floor> floors;

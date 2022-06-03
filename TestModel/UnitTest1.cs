@@ -25,8 +25,14 @@ namespace TestModel
            currentWorld = game.NextLevel;
            Assert.False(currentWorld.door.isOpen);
            var player = new Player( (int) currentWorld.door.x, (int)currentWorld.door.y);
-           currentWorld.PlayerInDoor(player, () => Console.WriteLine("lool"));
-           Assert.False(currentWorld.door.isOpen);
+           var text = "";
+           currentWorld.PlayerInDoor(player, () =>
+           {
+               text = "doogs";
+               currentWorld.door.UnLock();
+           });
+           Assert.True(currentWorld.door.isOpen);
+           Assert.AreEqual("doogs", text);
         }
 
         [Test]
