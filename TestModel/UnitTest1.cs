@@ -7,48 +7,31 @@ namespace TestModel
 {
     public class Tests
     {
-        private float startPositionX = 10;
-        private Player player = new Player(10, 10);
-        private World world = new World(500, 300, "где же выход?",true);
 
-        private DateTime lastUpdate = DateTime.MinValue;
-
-        new void Update()
-        {
-            var now = DateTime.Now;
-            var dt = (float) (now - lastUpdate).TotalMilliseconds / 100f;
-
-            if (lastUpdate != DateTime.MinValue)
-                player.Update(dt, player, world);
-
-            lastUpdate = now;
-        }
+        private Game game = new Game(440, 300);
+        
 
         [SetUp]
         public void Setup()
         {
         }
-
+        
+        
         [Test]
-        public void CheckMoveRightSide()
+        public void CheckWorkSwitchWorld()
         {
-            player.Move(Direction.Left);
+           var currentWorld = game[game.CurrentLevelNumber];
+           Assert.True(currentWorld.door.isOpen);
+           currentWorld = game.NextLevel;
+           Assert.False(currentWorld.door.isOpen);
+           var player = new Player( (int) currentWorld.door.x, (int)currentWorld.door.y);
+           currentWorld.PlayerInDoor(player, () => Console.WriteLine("lool"));
+           Assert.False(currentWorld.door.isOpen);
         }
 
         [Test]
         public void WorkDoor()
         {
-            Assert.AreEqual("где же выход?", world.TextLevel);
-            do
-            {
-                Update();
-                player.Move(Direction.Right);
-            } while (!world.IsCompleted);
-           
-               
-
-            Assert.AreEqual(true, world.IsCompleted);
-            Assert.AreEqual("Пошел Нафиг", world.TextLevel);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Model
@@ -24,13 +26,13 @@ namespace Model
 
         public class Door : IObjectWorld
         {
-            public bool isOpen { get; }
+            public bool isOpen { get; private set; }
             public float x { get; }
             public float y { get; }
             public float x2 { get; }
             public float y2 { get; }
 
-
+            public void UnLock() => isOpen = true;
             public Door(float x, float y, float x2, float y2, bool isOpen)
             {
                 this.x = x;
@@ -41,6 +43,9 @@ namespace Model
             }
         }
 
+        public Action ChangeText(string newText)
+            => () => TextLevel = newText;
+
         public string TextLevel { get; private set; }
         private List<Floor> floors;
 
@@ -49,24 +54,33 @@ namespace Model
         public int Ground { get; }
         public int RightSide { get; }
 
-        public World(int rightSide, int ground, string textLevel, bool isOpen)
+        public Monster Monster { get; private set; }
+
+        public World(int rightSide, int ground, string textLevel, string configuration)
         {
             Ground = rightSide;
             RightSide = ground;
             floors = new List<Floor>();
             TextLevel = textLevel;
-            CreateObjectWorld(isOpen);
+            CreateObjectWorld(configuration);
         }
 
-        private void CreateObjectWorld(bool isOpen)
+        private void CreateObjectWorld(string configuration)
         {
+            var config = new Queue<bool>(SetConfig(configuration));
             floors.Add(new Floor(RightSide / 2 - 150, Ground - 130, RightSide / 2 + 150, Ground - 120));
             floors.Add(new Floor(RightSide / 2 - 250, Ground - 50, RightSide / 2 + 150, Ground - 40));
             floors.Add(new Floor(RightSide / 2 + 150, Ground - 50, RightSide / 2 + 250, Ground - 40));
             floors.Add(new Floor(0, Ground / 1.6f, RightSide / 4f, Ground / 1.6f + 10));
             floors.Add(new Floor(RightSide - RightSide / 4, Ground / 1.6f, RightSide, Ground / 1.6f + 10));
-            door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, isOpen);
+            door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, config.Dequeue());
+            if (config.Dequeue()) Monster = new Monster(RightSide / 2, Ground / 2);
         }
+
+        private List<bool> SetConfig(string config)
+            =>
+                config.ToBool().ToList();
+
 
         private static bool Overlaps(Player player, IObjectWorld obj)
         {
@@ -76,9 +90,12 @@ namespace Model
                    player.y + player.Height >= obj.y;
         }
 
-        public void PlayerInDoor(Player player)
+        public void PlayerInDoor(Player player, Action action)
         {
-            if (Overlaps(player, door))
+            if (!door.isOpen && Overlaps(player, door))
+                action();
+
+            if (Overlaps(player, door) && door.isOpen)
                 IsCompleted = true;
         }
 
@@ -95,13 +112,25 @@ namespace Model
 
             return false;
         }
-        
+
         public void InRoom(Player player)
         {
             if (player.x + player.Width > RightSide)
-                player.ChangePositionPlayerX(RightSide - player.Width) ;
+                player.ChangePositionPlayerX(RightSide - player.Width);
             if (player.x < 0)
                 player.ChangePositionPlayerX(0);
+        }
+    }
+
+    public static class BoolExtension
+    {
+        public static IEnumerable<bool> ToBool(this string line)
+        {
+            foreach (var num in line)
+            {
+                if (num == '1') yield return true;
+                else yield return false;
+            }
         }
     }
 }

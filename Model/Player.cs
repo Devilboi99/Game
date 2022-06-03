@@ -68,7 +68,6 @@ namespace Model
             Resistance(0.10f);
             world.IsOnFloor(player);
             world.InRoom(player);
-            world.PlayerInDoor(player);
             if (world.IsCompleted)
                 x = 33;
             base.Update(dt, player, world);

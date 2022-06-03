@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Model;
 using System.Media;
+using System.Threading;
 
 namespace FutureGame
 {
@@ -11,8 +12,7 @@ namespace FutureGame
     {
         private Image playerImage;
         private Player player = new Player(30, 30);
-        private Game Levels = new Game();
-        private Monster monster = new Monster(1000, 30);
+        private Game Levels;
 
         private World currentWorld;
 //        private SoundPlayer mediaPlayer = new SoundPlayer("music/background.wav");
@@ -27,16 +27,15 @@ namespace FutureGame
             //  mediaPlayer.Play();
             WindowState = FormWindowState.Maximized;
             var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
-            Levels.CreateLevels(sizeForm.Height - 60, sizeForm.Width);
-            currentWorld = Levels[Levels.CurrentLevelNunber];
+            Levels = new Game(sizeForm.Height - 60, sizeForm.Width);
+            currentWorld = Levels[Levels.CurrentLevelNumber];
             Level(Levels);
             Application.Idle += delegate { Invalidate(); };
         }
-
-        public void Level(Game levels)
+        private void Level(Game levels)
         {
             if (currentWorld.IsCompleted && currentWorld.door.isOpen)
-                currentWorld = levels[++levels.CurrentLevelNunber];
+                currentWorld = levels.NextLevel;
         }
 
 
@@ -44,12 +43,13 @@ namespace FutureGame
         {
             Update();
             Level(Levels);
-            if (Levels.CurrentLevelNunber == numlevel.second)
+            if (Levels.CurrentLevelNumber == numlevel.second)
             {
                 e.Graphics.DrawImage(playerImage,
-                    new RectangleF(monster.x, monster.y, monster.Width,
-                        monster.Height));
+                    new RectangleF(currentWorld.Monster.x, currentWorld.Monster.y, currentWorld.Monster.Width,
+                        currentWorld.Monster.Height));
             }
+            currentWorld.PlayerInDoor(player, currentWorld.ChangeText("оооо нееет, дверь закрыта, можешь подождать секунд?"));
             e.Graphics.DrawString(currentWorld.TextLevel, new Font("Arial", 16), Brushes.Black,
                 new Point(currentWorld.RightSide / 2 - 80, currentWorld.Ground / 3));
             playerImage = Image.FromFile("Image/PlayerInMove.png");
@@ -84,8 +84,8 @@ namespace FutureGame
 
             if (lastUpdate != DateTime.MinValue)
                 player.Update(dt, player, currentWorld);
-            if (Levels.CurrentLevelNunber == numlevel.second)
-                monster.GoTo(player);
+            if (Levels.CurrentLevelNumber == numlevel.second)
+                currentWorld.Monster.GoTo(player);
 
             lastUpdate = now;
         }
