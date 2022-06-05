@@ -11,7 +11,7 @@ namespace FutureGame
             var ground = new PictureBox();
             var rightUpFloor = new PictureBox();
             var leftUpFloor = new PictureBox();
-            CreateElement(rightUpFloor, new Point(0, (int) (_currentLevel.Ground / 1.6)), 
+            CreateElement(rightUpFloor, new Point(0, (int) (_currentLevel.Ground / 1.6)),
                 _currentLevel.RightSide / 4, 60);
             CreateElement(ground, new Point(0, _currentLevel.Ground), _currentLevel.RightSide, 60);
             CreateElement(leftUpFloor, new Point(_currentLevel.RightSide - _currentLevel.RightSide / 4,
@@ -19,15 +19,12 @@ namespace FutureGame
             rightUpFloor.Paint += PainterUpFloor;
             ground.Paint += PainterGround;
             leftUpFloor.Paint += PainterUpFloor;
-          
         }
-        
-        
 
-        
+
         private void PainterUpFloor(object sender, PaintEventArgs e)
             => e.Graphics.DrawImage(_floorUpImage, new RectangleF(0, 0, _currentLevel.RightSide / 4f, 60));
-        
+
         private void PainterGround(object sender, PaintEventArgs e)
         {
             var x = 0;
@@ -40,14 +37,6 @@ namespace FutureGame
             }
         }
 
-        private void PaintFloor(object sender, PaintEventArgs e)
-        {
-            e.Graphics.DrawImage(_floorImage,
-                new RectangleF(0, 0, 150, 130));
-            e.Graphics.DrawImage(_floorImage,
-                new RectangleF(150, 0, 150, 130));
-        }
-        
         private void CreateElement(Control elementWorld, Point location, int width, int height)
         {
             elementWorld.Location = location;

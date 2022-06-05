@@ -19,13 +19,13 @@ namespace Model
         {
             this.x = x;
             this.y = y;
-            Width = 50;
-            Height = 80;
+            Width = 10;
+            Height = 23;
         }
 
         public void Move(Direction dir)
         {
-            if (Velocity.X > 20 || Velocity.X < -20) return;
+            if (Velocity.X > 25 || Velocity.X < -25) return;
 
             switch (dir)
             {

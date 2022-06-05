@@ -13,7 +13,7 @@ namespace FutureGame
         private Image _doorImage;
         private Image _floorUpImage;
         private Image _backGround;
-        private Image _monster;
+        private Image _monsterImage;
         private readonly Player _player = new Player(30, 30);
         private Game _gameMap;
         private World _currentLevel;
@@ -52,12 +52,12 @@ namespace FutureGame
 
         private void TakeTexture()
         {
-            _playerImage = Image.FromFile("Image/PlayerInMove.png");
+            _playerImage = Image.FromFile("Image/Player.png");
             _floorImage = Image.FromFile("Image/blocks/Floor.jpg");
             _doorImage = Image.FromFile("Image/door/door.png");
             _backGround = Image.FromFile("Image/BackGround/back.png");// оо, ты здесь. может еще фон добавишь? как видишь все готово ток найти нужно и код немного дописать
             _floorUpImage = Image.FromFile("Image/blocks/blockUp.png");
-            _monster = Image.FromFile("Image/monster/frame-1.png");
+            _monsterImage = Image.FromFile("Image/monster/frame-1.r.png");
         }
         
         private void DrawWorld(Graphics graphics)
@@ -69,14 +69,12 @@ namespace FutureGame
                 new RectangleF(_currentLevel.RightSide / 2, _currentLevel.Ground - 130, 150, 130));
             graphics.DrawImage(_doorImage,
                 new RectangleF(_currentLevel.RightSide - 10, _currentLevel.Ground - 100, 30, 120));
-            graphics.DrawImage(_playerImage,
-                new RectangleF(_player.x, _player.y, _player.Width,
-                    _player.Height));
+            graphics.DrawImageUnscaled(_playerImage, (int)_player.x,(int)_player.y);
             graphics.DrawString(_currentLevel.TextLevel, new Font("Arial", 14), Brushes.Black,
                 new Point(_currentLevel.RightSide / 2 - 80, _currentLevel.Ground / 3));
             if  (_currentLevel.Monster.IsLive)
             {
-                graphics.DrawImage(_monster,
+                graphics.DrawImage(_monsterImage,
                     new RectangleF(_currentLevel.Monster.x, _currentLevel.Monster.y, _currentLevel.Monster.Width,
                         _currentLevel.Monster.Height));
             }
@@ -101,13 +99,14 @@ namespace FutureGame
                 if (World.MonsterInPlayer(_player, _currentLevel.Monster))
                     Application.Restart();
             }
-
+            
             if (_currentLevel.IsLevelCompleted())
                 _currentLevel = _gameMap.NextLevel;
 
             _lastUpdate = now;
             Invalidate();
         }
+        
 
         private void CreateMap()
         {
