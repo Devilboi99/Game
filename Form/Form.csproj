@@ -15,4 +15,8 @@
       <ProjectReference Include="..\Model\Model.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="bin\Debug\net5.0-windows\Image\blocks\Floor.png" />
+    </ItemGroup>
+
 </Project>

@@ -13,7 +13,7 @@ namespace Model
         public float Width { get; }
         public float Height { get; }
 
-        private const float SpeedStep = 5;
+        private const float SpeedStep = 2;
 
         public Player(int x, int y)
         {
@@ -25,7 +25,7 @@ namespace Model
 
         public void Move(Direction dir)
         {
-            if (Velocity.X > 30 || Velocity.X < -30) return;
+            if (Velocity.X > 20 || Velocity.X < -20) return;
 
             switch (dir)
             {

@@ -14,7 +14,6 @@ namespace FutureGame
         [STAThread]
         static void Main()
         {
-            
             Application.Run(new OuterRoom());
         }
     }

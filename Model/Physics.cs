@@ -26,13 +26,15 @@ namespace Model
         public Physics()
         {
             Spring = 0.5f;
-            Mass = 1;
+            Mass = 1f;
             Gravity = true;
         }
         
 
         public virtual void Update(float dt, Player player, World world)
         {
+            if (Velocity.Y > 20)
+                Velocity = new PointF(Velocity.X, 20);
             //сила
             var force = Force;
             Force = Point.Empty;
