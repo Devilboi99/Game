@@ -11,7 +11,8 @@ namespace FutureGame
         private Image _playerImage;
         private Image _floorImage;
         private Image _doorImage;
-        private Image backGround;
+        private Image _floorUpImage;
+        private Image _backGround;
         private readonly Player _player = new Player(30, 30);
         private Game _gameMap;
         private World _currentLevel;
@@ -25,19 +26,13 @@ namespace FutureGame
             //mediaPlayer.Play();
             CreateMap();
             TakeTexture();
-            PaintWorld();
+            PaintWorldForeground();
             SettingSmoothness(5);
         }
 
         protected override void OnPaint(PaintEventArgs args)
         {
             var e = args.Graphics;
-            if  (_currentLevel.Monster.IsLive)
-            {
-                e.DrawImage(_playerImage,
-                    new RectangleF(_currentLevel.Monster.x, _currentLevel.Monster.y, _currentLevel.Monster.Width,
-                        _currentLevel.Monster.Height));
-            }
             _currentLevel.PlayerInDoor(_player, () => _gameMap.ActionWithDoor[_gameMap.CurrentLevelNumber]());
             DrawWorld(e);
         }
@@ -59,22 +54,35 @@ namespace FutureGame
             _playerImage = Image.FromFile("Image/PlayerInMove.png");
             _floorImage = Image.FromFile("Image/blocks/Floor.jpg");
             _doorImage = Image.FromFile("Image/door/door.png");
-            backGround = Image.FromFile("Image/BackGround/back.jpg");
+            _backGround = Image.FromFile("Image/BackGround/back.png");
+            _floorUpImage = Image.FromFile("Image/blocks/blockUp.png");
+            
         }
         
         private void DrawWorld(Graphics graphics)
         {
             graphics.DrawImage(_floorImage,
+                new RectangleF(_currentLevel.RightSide / 2 - 150, 
+                    _currentLevel.Ground - 130, 150, 130));
+            graphics.DrawImage(_floorImage,
+                new RectangleF(_currentLevel.RightSide / 2, _currentLevel.Ground - 130, 150, 130));
+            graphics.DrawImage(_floorImage,
                 new RectangleF(_currentLevel.RightSide / 2 - 250, _currentLevel.Ground - 50, 100, 50));
             graphics.DrawImage(_floorImage,
                 new RectangleF(_currentLevel.RightSide / 2 + 150, _currentLevel.Ground - 50, 100, 50));
             graphics.DrawImage(_doorImage,
-                new RectangleF(_currentLevel.RightSide - 40, _currentLevel.Ground - 100, 80, 120));
+                new RectangleF(_currentLevel.RightSide - 10, _currentLevel.Ground - 100, 30, 120));
             graphics.DrawImage(_playerImage,
                 new RectangleF(_player.x, _player.y, _player.Width,
                     _player.Height));
             graphics.DrawString(_currentLevel.TextLevel, new Font("Arial", 16), Brushes.Black,
                 new Point(_currentLevel.RightSide / 2 - 80, _currentLevel.Ground / 3));
+            if  (_currentLevel.Monster.IsLive)
+            {
+                graphics.DrawImage(_playerImage,
+                    new RectangleF(_currentLevel.Monster.x, _currentLevel.Monster.y, _currentLevel.Monster.Width,
+                        _currentLevel.Monster.Height));
+            }
 
             // вроде этим я хочу разделить изображение от просто рисованых штук
         }
@@ -91,7 +99,11 @@ namespace FutureGame
                 _player.Update(dt, _player, _currentLevel);
 
             if (_gameMap.CurrentLevelNumber == NumLevel.Second)
+            {
                 _currentLevel.Monster.GoTo(_player);
+                if (World.MonsterInPlayer(_player, _currentLevel.Monster))
+                    Application.Restart();
+            }
 
             if (_currentLevel.IsLevelCompleted())
                 _currentLevel = _gameMap.NextLevel;

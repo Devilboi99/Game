@@ -89,6 +89,14 @@ namespace Model
                    player.y <= obj.y2 &&
                    player.y + player.Height >= obj.y;
         }
+        
+        public static bool MonsterInPlayer(Player player, Monster obj)
+        {
+            return player.x + player.Width >= obj.x &&
+                   obj.x + obj.Width >= player.x &&
+                   player.y <= obj.y + obj.Height &&
+                   player.y + player.Height >= obj.y;
+        }
 
         public void PlayerInDoor(Player player, Action action)
         {

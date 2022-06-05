@@ -46,8 +46,7 @@ namespace Model
         Dictionary<Enum, World> levels = new Dictionary<Enum, World>();   // продумать защиту этих штук
         public Dictionary<Enum, Action> ActionWithDoor = new Dictionary<Enum, Action>();
         public NumLevel CurrentLevelNumber { get; private set; }
-
-
+        
         public Game(int height, int width)
         {
             CreateLevels(height, width);
@@ -64,7 +63,7 @@ namespace Model
             levels[NumLevel.Second] = new World(ground, rightSide, "Ой какое милое", "01");
             ActionWithDoor[NumLevel.Second] = () => Сonfiguration.ConfigWithFiveSeconds(levels[NumLevel.Second]);
 
-            levels[NumLevel.Third] = new World(ground, rightSide, "ааа блин этот левел не сделан", "00");
+            levels[NumLevel.Third] = new World(ground, rightSide, "ааа блин этот Уровень не доделан", "00");
             ActionWithDoor[NumLevel.Third] = () => Сonfiguration.ConfigWithLazyDev(levels[NumLevel.Third]);
         }
 
