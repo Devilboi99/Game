@@ -17,7 +17,7 @@ namespace Model
             this.y = y;
             IsLive = isLive;
             Width = 50;
-            Height = 80;
+            Height = 50;
         }
 
         public void GoTo(Player player)
