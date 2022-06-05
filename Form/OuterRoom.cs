@@ -55,7 +55,7 @@ namespace FutureGame
             _playerImage = Image.FromFile("Image/Player.png");
             _floorImage = Image.FromFile("Image/blocks/Floor.jpg");
             _doorImage = Image.FromFile("Image/door/door.png");
-            _backGround = Image.FromFile("Image/BackGround/back.png");// оо, ты здесь. может еще фон добавишь? как видишь все готово ток найти нужно и код немного дописать
+            _backGround = Image.FromFile("Image/BackGround/back.png");// оо, ты здесь. может еще фон добавишь? как видишь все готово ток найти нужно и код немного дописать и оптимизировать сестему и еще анимаций добавить, звуки прыжков, добавить увроней а стоп... прости.
             _floorUpImage = Image.FromFile("Image/blocks/blockUp.png");
             _monsterImage = Image.FromFile("Image/monster/frame-1.r.png");
         }
