@@ -129,8 +129,8 @@ namespace FutureGame
                      ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.UserPaint, true);
             WindowState = FormWindowState.Maximized;
-            var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
-            return sizeForm;
+            var size = new Size(1366,768);
+            return ClientSize;
         }
     }
 }
