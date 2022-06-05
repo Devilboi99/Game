@@ -33,6 +33,7 @@ namespace Model
             public float y2 { get; }
 
             public void UnLock() => isOpen = true;
+
             public Door(float x, float y, float x2, float y2, bool isOpen)
             {
                 this.x = x;
@@ -73,13 +74,12 @@ namespace Model
             floors.Add(new Floor(RightSide / 2 + 150, Ground - 50, RightSide / 2 + 250, Ground - 40));
             floors.Add(new Floor(0, Ground / 1.6f, RightSide / 4f, Ground / 1.6f + 10));
             floors.Add(new Floor(RightSide - RightSide / 4, Ground / 1.6f, RightSide, Ground / 1.6f + 10));
-            door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, config.Dequeue());
-            if (config.Dequeue()) Monster = new Monster(RightSide / 2, Ground / 2);
+            door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, config.Dequeue()); 
+            Monster = new Monster(RightSide / 2, Ground / 2, config.Dequeue());
         }
 
-        private List<bool> SetConfig(string config)
-            =>
-                config.ToBool().ToList();
+        private IEnumerable<bool> SetConfig(string config)
+            => config.ToBool().ToList();
 
 
         private static bool Overlaps(Player player, IObjectWorld obj)
@@ -112,6 +112,9 @@ namespace Model
 
             return false;
         }
+
+        public bool IsLevelCompleted()
+            => IsCompleted && door.isOpen;
 
         public void InRoom(Player player)
         {

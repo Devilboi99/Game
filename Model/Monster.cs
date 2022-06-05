@@ -9,17 +9,17 @@ namespace Model
         public float Width { get; }
         public float Height { get; }
 
-        public bool Islive { get; }
+        public bool IsLive { get; }
 
-        public Monster(int x, int y)
+        public Monster(int x, int y, bool isLive = false)
         {
             this.x = x;
             this.y = y;
-            Islive = true;
+            IsLive = isLive;
             Width = 50;
             Height = 80;
         }
-        
+
         public void GoTo(Player player)
         {
             if (x > player.x)
