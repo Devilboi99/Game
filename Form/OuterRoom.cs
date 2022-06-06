@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
+using System.Media;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using Model;
 using Timer = System.Windows.Forms.Timer;
 
@@ -17,14 +19,12 @@ namespace FutureGame
         private Player _player;
         private Game _gameMap;
         private World _currentLevel;
-
-
-        //        private SoundPlayer mediaPlayer = new SoundPlayer("music/background.wav");
-
+        private SoundPlayer _mediaPlayer = new SoundPlayer("music/background.wav");
+        
         public OuterRoom()
         {
             InitializeComponent();
-            //mediaPlayer.Play();
+            _mediaPlayer.Play();
             CreateMap();
             TakeTexture();
             PaintWorldForeground();
@@ -87,6 +87,7 @@ namespace FutureGame
             var now = DateTime.Now;
             var dt = (float) (now - _lastUpdate).TotalMilliseconds / 100f;
 
+            
             _currentLevel.PlayerInDoor(_player, () => _gameMap.ActionWithDoor[_gameMap.CurrentLevelNumber]());
 
             if (_lastUpdate != DateTime.MinValue)

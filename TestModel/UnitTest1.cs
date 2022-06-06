@@ -21,23 +21,26 @@ namespace TestModel
         public void CheckWorkSwitchWorld()
         {
            var currentWorld = game[game.CurrentLevelNumber];
-           Assert.True(currentWorld.Door.IsOpen);
-           currentWorld = game.NextLevel;
            Assert.False(currentWorld.Door.IsOpen);
-           var player = new Player( (int) currentWorld.Door.X, (int)currentWorld.Door.Y);
-           var text = "";
-           currentWorld.PlayerInDoor(player, () =>
-           {
-               text = "doogs";
-               currentWorld.Door.UnLock();
-           });
-           Assert.True(currentWorld.Door.IsOpen);
-           Assert.AreEqual("doogs", text);
+           currentWorld = game.NextLevel;
+           Assert.True(currentWorld.Monster.IsLive);
         }
 
         [Test]
-        public void WorkDoor()
+        public void WorkDoorAction()
         {
+            var currentWorld = game[game.CurrentLevelNumber];
+            var player = new Player( (int) currentWorld.Door.X, (int)currentWorld.Door.Y);
+            var text = "";
+            currentWorld.PlayerInDoor(player, () =>
+            {
+                text = "doogs";
+                currentWorld.Door.UnLock();
+            });
+            Assert.True(currentWorld.Door.IsOpen);
+            Assert.AreEqual("doogs", text);
         }
+        
+        
     }
 }

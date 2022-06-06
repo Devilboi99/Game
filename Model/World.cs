@@ -16,6 +16,8 @@ namespace Model
         public int Ground { get; }
         public int RightSide { get; }
 
+        private bool _isFirst = true;
+
         public Monster Monster { get; private set; }
 
         public World(int rightSide, int ground, string textLevel, string configuration)
@@ -59,9 +61,13 @@ namespace Model
 
         public void PlayerInDoor(Player player, Action action)
         {
-            if (!Door.IsOpen && Overlaps(player, Door))
+            if (!Door.IsOpen && Overlaps(player, Door) && _isFirst)
+            {
                 action();
-
+                _isFirst = false;
+            }
+                
+            
             if (Overlaps(player, Door) && Door.IsOpen)
                 IsCompleted = true;
         }

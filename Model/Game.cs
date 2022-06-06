@@ -8,7 +8,9 @@ namespace Model
     {
         First,
         Second,
-        Third
+        Third,
+        Fourth
+
     }
 
     public class Game
@@ -62,6 +64,13 @@ namespace Model
                 () => levels[NumLevel.Second].Door.UnLock());
 
             levels[NumLevel.Third] = new World(ground, rightSide, "ааа блин этот Уровень не доделан", "00");
+            ActionWithDoor[NumLevel.Third] = () => Сonfiguration.Config(
+                levels[NumLevel.Third],
+                "Блин а можешь доделать игру?",
+                LazyDevTexts,
+                () => { /* Вася, доделай игру перед релизом!!! */ });
+            
+            levels[NumLevel.Fourth] = new World(ground, rightSide, "Блин ты ж сейчас это читаешь, да?", "00");
             ActionWithDoor[NumLevel.Third] = () => Сonfiguration.Config(
                 levels[NumLevel.Third],
                 "Блин а можешь доделать игру?",
