@@ -125,10 +125,10 @@ namespace Model
 
         public Floor(float x, float y, float x2, float y2)
         {
-            this.X = x;
-            this.Y = y;
-            this.X2 = x2;
-            this.Y2 = y2;
+            X = x;
+            Y = y;
+            X2 = x2;
+            Y2 = y2;
         }
     }
 

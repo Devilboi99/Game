@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Media;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using Model;
 using Timer = System.Windows.Forms.Timer;
 
