@@ -47,7 +47,7 @@ namespace Model
 
         public World NextLevel => levels.TryGetValue(++CurrentLevelNumber, out var level) ? level : null;
 
-        private void CreateLevels(int ground, int rightSide) // оно здесь.
+        private void CreateLevels(int ground, int rightSide) //  Оно здесь!! можешь тесты глянуть они помогут.
         {
             levels[NumLevel.First] = new World(ground, rightSide, "Где же выход?", "00");
             ActionWithDoor[NumLevel.First] = () => Сonfiguration.Config(
@@ -66,16 +66,16 @@ namespace Model
             levels[NumLevel.Third] = new World(ground, rightSide, "ааа блин этот Уровень не доделан", "00");
             ActionWithDoor[NumLevel.Third] = () => Сonfiguration.Config(
                 levels[NumLevel.Third],
-                "Блин а можешь доделать игру?",
+                "а можешь дописать игру?",
                 LazyDevTexts,
                 () => { /* Вася, доделай игру перед релизом!!! */ });
             
-            levels[NumLevel.Fourth] = new World(ground, rightSide, "Блин ты ж сейчас это читаешь, да?", "00");
+            levels[NumLevel.Third] = new World(ground, rightSide, "Ура ура конец игры, ты рад?", "10");
             ActionWithDoor[NumLevel.Third] = () => Сonfiguration.Config(
                 levels[NumLevel.Third],
-                "Блин а можешь доделать игру?",
+                "а можешь дописать игру?",
                 LazyDevTexts,
-                () => { /* Вася, доделай игру перед релизом!!! */ });
+                () => { /*  */ });
         }
 
         public World this[NumLevel level]
@@ -91,7 +91,7 @@ namespace Model
         };
         
         private static readonly (int, string)[] LazyDevTexts = {
-            (3, "А то чет получается концвки нету(("),
+            (3, "А то чет получается концовки нету(("),
             (3, "Там эта... нужно дверь открыть плз"),
             (8, "Ну давай не ленись там концова крутая, честно"),
             (8, "ты еще здесь? может и фон найдешь?")

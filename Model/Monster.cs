@@ -5,7 +5,7 @@
         public float Width { get; }
         public float Height { get; }
 
-        private const int Speed = 2;
+        private const int Speed = 1;
 
         public bool IsLive { get; }
 
