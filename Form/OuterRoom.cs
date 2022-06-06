@@ -14,7 +14,7 @@ namespace FutureGame
         private Image _floorUpImage;
         private Image _backGround;
         private Image _monsterImage;
-        private readonly Player _player = new Player(30, 30);
+        private Player _player;
         private Game _gameMap;
         private World _currentLevel;
 
@@ -30,11 +30,10 @@ namespace FutureGame
             PaintWorldForeground();
             SettingSmoothness(5);
         }
-        
+
         protected override void OnPaint(PaintEventArgs args)
         {
             var e = args.Graphics;
-            _currentLevel.PlayerInDoor(_player, () => _gameMap.ActionWithDoor[_gameMap.CurrentLevelNumber]());
             DrawWorld(e);
         }
 
@@ -55,31 +54,29 @@ namespace FutureGame
             _playerImage = Image.FromFile("Image/Player.png");
             _floorImage = Image.FromFile("Image/blocks/Floor.jpg");
             _doorImage = Image.FromFile("Image/door/door.png");
-            _backGround = Image.FromFile("Image/BackGround/back.png");// оо, ты здесь. может еще фон добавишь? как видишь все готово ток найти нужно и код немного дописать и оптимизировать сестему и еще анимаций добавить, звуки прыжков, добавить увроней а стоп... прости.
+            _backGround = Image.FromFile("Image/BackGround/back.png");               // оо, ты здесь. может еще фон добавишь? как видишь все готово ток найти нужно и код немного дописать и оптимизировать систему и еще анимаций добавить, звуки прыжков,  уровней а стоп... прости.
             _floorUpImage = Image.FromFile("Image/blocks/blockUp.png");
             _monsterImage = Image.FromFile("Image/monster/frame-1.r.png");
         }
-        
+
         private void DrawWorld(Graphics graphics)
         {
             graphics.DrawImage(_floorImage,
-                new RectangleF(_currentLevel.RightSide / 2 - 150, 
+                new RectangleF(_currentLevel.RightSide / 2 - 150,
                     _currentLevel.Ground - 130, 150, 130));
             graphics.DrawImage(_floorImage,
                 new RectangleF(_currentLevel.RightSide / 2, _currentLevel.Ground - 130, 150, 130));
             graphics.DrawImage(_doorImage,
                 new RectangleF(_currentLevel.RightSide - 10, _currentLevel.Ground - 100, 30, 120));
-            graphics.DrawImageUnscaled(_playerImage, (int)_player.x,(int)_player.y);
+            graphics.DrawImageUnscaled(_playerImage, (int) _player.X, (int) _player.Y);
             graphics.DrawString(_currentLevel.TextLevel, new Font("Arial", 14), Brushes.Black,
                 new Point(_currentLevel.RightSide / 2 - 80, _currentLevel.Ground / 3));
-            if  (_currentLevel.Monster.IsLive)
+            if (_currentLevel.Monster.IsLive)
             {
                 graphics.DrawImage(_monsterImage,
-                    new RectangleF(_currentLevel.Monster.x, _currentLevel.Monster.y, _currentLevel.Monster.Width,
+                    new RectangleF(_currentLevel.Monster.X, _currentLevel.Monster.Y, _currentLevel.Monster.Width,
                         _currentLevel.Monster.Height));
             }
-
-            // вроде этим я хочу разделить изображение от просто рисованых штук
         }
 
 
@@ -90,29 +87,33 @@ namespace FutureGame
             var now = DateTime.Now;
             var dt = (float) (now - _lastUpdate).TotalMilliseconds / 100f;
 
+            _currentLevel.PlayerInDoor(_player, () => _gameMap.ActionWithDoor[_gameMap.CurrentLevelNumber]());
+
             if (_lastUpdate != DateTime.MinValue)
                 _player.Update(dt, _player, _currentLevel);
 
+            
             if (_gameMap.CurrentLevelNumber == NumLevel.Second)
             {
                 _currentLevel.Monster.GoTo(_player);
                 if (World.MonsterInPlayer(_player, _currentLevel.Monster))
-                    Application.Restart();
+                    CreateMap();
             }
-            
+
             if (_currentLevel.IsLevelCompleted())
                 _currentLevel = _gameMap.NextLevel;
 
             _lastUpdate = now;
             Invalidate();
         }
-        
+
 
         private void CreateMap()
         {
             var sizeForm = SettingsSizeForm();
             _gameMap = new Game(sizeForm.Height - 60, sizeForm.Width);
             _currentLevel = _gameMap[_gameMap.CurrentLevelNumber];
+            _player = new Player(30, _currentLevel.Ground);
         }
 
         private void SettingSmoothness(int interval)
@@ -129,8 +130,8 @@ namespace FutureGame
                      ControlStyles.OptimizedDoubleBuffer |
                      ControlStyles.UserPaint, true);
             WindowState = FormWindowState.Maximized;
-            var size = new Size(1366,768);
-            return ClientSize;
+            var sizeForm = Screen.PrimaryScreen.WorkingArea.Size;
+            return sizeForm;
         }
     }
 }

@@ -1,55 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 
 namespace Model
 {
     public class World
     {
-        private class Floor : IObjectWorld
-        {
-            public float x { get; }
-            public float y { get; }
-            public float x2 { get; }
-            public float y2 { get; }
-
-
-            public Floor(float x, float y, float x2, float y2)
-            {
-                this.x = x;
-                this.y = y;
-                this.x2 = x2;
-                this.y2 = y2;
-            }
-        }
-
-        public class Door : IObjectWorld
-        {
-            public bool isOpen { get; private set; }
-            public float x { get; }
-            public float y { get; }
-            public float x2 { get; }
-            public float y2 { get; }
-
-            public void UnLock() => isOpen = true;
-
-            public Door(float x, float y, float x2, float y2, bool isOpen)
-            {
-                this.x = x;
-                this.y = y;
-                this.x2 = x2;
-                this.y2 = y2;
-                this.isOpen = isOpen;
-            }
-        }
-
-        public void ChangeText(string newText)
-            => TextLevel = newText;
-        public string TextLevel { get; private set; }
+        public string TextLevel { get; set; }
         private List<Floor> floors;
 
-        public Door door;
+        public Door Door;
         public bool IsCompleted { get; private set; }
         public int Ground { get; }
         public int RightSide { get; }
@@ -71,7 +33,7 @@ namespace Model
             floors.Add(new Floor(RightSide / 2 - 150, Ground - 130, RightSide / 2 + 150, Ground - 120));
             floors.Add(new Floor(0, Ground / 1.6f, RightSide / 4f, Ground / 1.6f + 10));
             floors.Add(new Floor(RightSide - RightSide / 4, Ground / 1.6f, RightSide, Ground / 1.6f + 10));
-            door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, config.Dequeue()); 
+            Door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, config.Dequeue());
             Monster = new Monster(RightSide - 10, Ground / 2, config.Dequeue());
         }
 
@@ -81,26 +43,26 @@ namespace Model
 
         private static bool Overlaps(Player player, IObjectWorld obj)
         {
-            return player.x + player.Width >= obj.x &&
-                   obj.x2 >= player.x &&
-                   player.y <= obj.y2 &&
-                   player.y + player.Height >= obj.y;
+            return player.X + player.Width >= obj.X &&
+                   obj.X2 >= player.X &&
+                   player.Y <= obj.Y2 &&
+                   player.Y + player.Height >= obj.Y;
         }
-        
+
         public static bool MonsterInPlayer(Player player, Monster obj)
         {
-            return player.x + player.Width >= obj.x &&
-                   obj.x + obj.Width >= player.x &&
-                   player.y <= obj.y + obj.Height &&
-                   player.y + player.Height >= obj.y;
+            return player.X + player.Width >= obj.X &&
+                   obj.X + obj.Width >= player.X &&
+                   player.Y <= obj.Y + obj.Height &&
+                   player.Y + player.Height >= obj.Y;
         }
 
         public void PlayerInDoor(Player player, Action action)
         {
-            if (!door.isOpen && Overlaps(player, door))
+            if (!Door.IsOpen && Overlaps(player, Door))
                 action();
 
-            if (Overlaps(player, door) && door.isOpen)
+            if (Overlaps(player, Door) && Door.IsOpen)
                 IsCompleted = true;
         }
 
@@ -108,37 +70,67 @@ namespace Model
         {
             foreach (var floor in floors)
             {
-                if (Overlaps(player, floor))
-                {
-                    player.OnGroundCollision(floor.y - player.Height);
-                    return true;
-                }
+                if (!Overlaps(player, floor)) continue;
+                
+                player.OnGroundCollision(floor.Y - player.Height);
+                return true;
             }
 
             return false;
         }
 
         public bool IsLevelCompleted()
-            => IsCompleted && door.isOpen;
+            => IsCompleted && Door.IsOpen;
 
         public void InRoom(Player player)
         {
-            if (player.x + player.Width > RightSide)
+            if (player.X + player.Width > RightSide)
                 player.ChangePositionPlayerX(RightSide - player.Width);
-            if (player.x < 0)
+            if (player.X < 0)
                 player.ChangePositionPlayerX(0);
+        }
+    }
+
+    public class Door : IObjectWorld
+    {
+        public bool IsOpen { get; private set; }
+        public float X { get; }
+        public float Y { get; }
+        public float X2 { get; }
+        public float Y2 { get; }
+
+        public void UnLock() => IsOpen = true;
+
+        public Door(float x, float y, float x2, float y2, bool isOpen)
+        {
+            X = x;
+            Y = y;
+            X2 = x2;
+            Y2 = y2;
+            IsOpen = isOpen;
+        }
+    }
+
+    public class Floor : IObjectWorld
+    {
+        public float X { get; }
+        public float Y { get; }
+        public float X2 { get; }
+        public float Y2 { get; }
+
+
+        public Floor(float x, float y, float x2, float y2)
+        {
+            this.X = x;
+            this.Y = y;
+            this.X2 = x2;
+            this.Y2 = y2;
         }
     }
 
     public static class BoolExtension
     {
         public static IEnumerable<bool> ToBool(this string line)
-        {
-            foreach (var num in line)
-            {
-                if (num == '1') yield return true;
-                else yield return false;
-            }
-        }
+            => line.Select(x => x == '1');
     }
 }

@@ -8,15 +8,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Model" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Model\Model.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="bin\Debug\net5.0-windows\Image\blocks\Floor.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="bin\**" />
+      <Compile Remove="Model\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="bin\**" />
+      <EmbeddedResource Remove="Model\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="bin\**" />
+      <None Remove="Model\**" />
     </ItemGroup>
 
 </Project>

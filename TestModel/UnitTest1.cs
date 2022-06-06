@@ -21,17 +21,17 @@ namespace TestModel
         public void CheckWorkSwitchWorld()
         {
            var currentWorld = game[game.CurrentLevelNumber];
-           Assert.True(currentWorld.door.isOpen);
+           Assert.True(currentWorld.Door.IsOpen);
            currentWorld = game.NextLevel;
-           Assert.False(currentWorld.door.isOpen);
-           var player = new Player( (int) currentWorld.door.x, (int)currentWorld.door.y);
+           Assert.False(currentWorld.Door.IsOpen);
+           var player = new Player( (int) currentWorld.Door.X, (int)currentWorld.Door.Y);
            var text = "";
            currentWorld.PlayerInDoor(player, () =>
            {
                text = "doogs";
-               currentWorld.door.UnLock();
+               currentWorld.Door.UnLock();
            });
-           Assert.True(currentWorld.door.isOpen);
+           Assert.True(currentWorld.Door.IsOpen);
            Assert.AreEqual("doogs", text);
         }
 

@@ -2,9 +2,10 @@
 {
     public interface IObjectWorld
     {
-        public float x { get; }
-        public float y { get; }
-        public float x2 { get; }
-        public float y2 { get; }
+        public float X { get; }
+        public float Y { get; }
+        public float X2 { get; }
+        public float Y2 { get; } 
     }
 }
+// Что ты здесь делаешь ? ищи в Game
