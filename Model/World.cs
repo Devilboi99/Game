@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-
 
 namespace Model
 {
     public class World
     {
         public string TextLevel { get; set; }
-        private List<Floor> floors;
+        private readonly List<IObjectWorld> _floors;
 
         public Door Door;
         public bool IsCompleted { get; private set; }
@@ -24,7 +22,7 @@ namespace Model
         {
             Ground = rightSide;
             RightSide = ground;
-            floors = new List<Floor>();
+            _floors = new List<IObjectWorld>();
             TextLevel = textLevel;
             CreateObjectWorld(configuration);
         }
@@ -32,9 +30,9 @@ namespace Model
         private void CreateObjectWorld(string configuration)
         {
             var config = new Queue<bool>(SetConfig(configuration));
-            floors.Add(new Floor(RightSide / 2 - 150, Ground - 130, RightSide / 2 + 150, Ground - 120));
-            floors.Add(new Floor(0, Ground / 1.6f, RightSide / 4f, Ground / 1.6f + 10));
-            floors.Add(new Floor(RightSide - RightSide / 4, Ground / 1.6f, RightSide, Ground / 1.6f + 10));
+            _floors.Add(new Floor(RightSide / 2 - 150, Ground - 130, RightSide / 2 + 150, Ground - 120));
+            _floors.Add(new Floor(0, Ground / 1.6f, RightSide / 4f, Ground / 1.6f + 10));
+            _floors.Add(new Floor(RightSide - RightSide / 4, Ground / 1.6f, RightSide, Ground / 1.6f + 10));
             Door = new Door(RightSide - 20, Ground - 90, RightSide, Ground, config.Dequeue());
             Monster = new Monster(RightSide - 10, Ground / 2, config.Dequeue());
         }
@@ -74,7 +72,7 @@ namespace Model
 
         public bool IsOnFloor(Player player)
         {
-            foreach (var floor in floors)
+            foreach (var floor in _floors)
             {
                 if (!Overlaps(player, floor)) continue;
                 

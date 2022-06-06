@@ -7,15 +7,15 @@ namespace Model
         public float X { get; protected set; }
         public float Y { get; protected set; }
 
-        public PointF Velocity { get; set; }
+        protected PointF Velocity { get; set; }
 
-        public float Mass { get; set; }
+        private float Mass { get; set; }
 
-        public float Spring { get; set; }
+        private float Spring { get; set; }
 
-        public bool Gravity { get; set; }
+        private bool Gravity { get; set; }
 
-        public PointF Force { get; set; }
+        private PointF Force { get; set; }
 
 
         public Physics()

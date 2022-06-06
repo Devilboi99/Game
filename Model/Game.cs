@@ -68,14 +68,14 @@ namespace Model
                 levels[NumLevel.Third],
                 "а можешь дописать игру?",
                 LazyDevTexts,
-                () => { /* Вася, доделай игру перед релизом!!! */ });
+                () => {});
             
-            levels[NumLevel.Third] = new World(ground, rightSide, "Ура ура конец игры, ты рад?", "10");
-            ActionWithDoor[NumLevel.Third] = () => Сonfiguration.Config(
-                levels[NumLevel.Third],
+            levels[NumLevel.Fourth] = new World(ground, rightSide, "Ура ура конец игры, ты рад?", "10");
+            ActionWithDoor[NumLevel.Fourth] = () => Сonfiguration.Config(
+                levels[NumLevel.Fourth],
                 "а можешь дописать игру?",
                 LazyDevTexts,
-                () => { /*  */ });
+                () => {});
         }
 
         public World this[NumLevel level]
